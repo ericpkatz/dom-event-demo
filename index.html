@@ -1,7 +1,79 @@
 <html>
   <head>
+<style>
+* {
+ box-sizing: border-box;
+}
+#container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#container > div {
+  border: solid 1px dodgerBlue;
+  width: calc(25% - 2rem);
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.special {
+  background-color: cornSilk;
+}
+</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js" integrity="sha512-/seDHxVfh1NvFUscAj8GsHQVZJvr2jjAoYsNL7As2FCaFHUHYIarl3sRCvVlFgyouVNiRgHIebyLKjpgd1SLDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
   <body>
-    <h1>Products</h1>
+    <h1>Products (<span>0</span>)</h1>
+    <select>
+      <option value=''>Add Products</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+    </select>
+    <section id='container'>
+
+    </section>
+  <script>
+    const container = document.querySelector('#container');
+    const span = document.querySelector('span');
+    const select = document.querySelector('select');
+
+    select.addEventListener('change', (ev)=> {
+      if(ev.target.value){
+        const num = ev.target.value;
+        const products = [];
+        while(products.length < num){
+          products.push(faker.commerce.productName());
+        }
+        products.forEach(function(product){
+          const div = document.createElement('div');
+          div.innerHTML = product;
+          container.prepend(div);
+        });
+      }
+    });
+
+    container.addEventListener('click', (ev)=> {
+      if(ev.target.tagName === 'DIV'){
+        ev.target.classList.toggle('special');
+        if(ev.target.classList.contains('special')){
+          span.innerHTML = span.innerHTML*1 + 1;
+        }
+        else {
+          span.innerHTML = span.innerHTML - 1;
+        }
+      }
+    });
+
+    const products = [];
+    while(products.length < 10){
+      products.push(faker.commerce.productName());
+    }
+    products.forEach(function(product){
+      const div = document.createElement('div');
+      div.innerHTML = product;
+      container.append(div);
+    });
+  </script>
   </body>
 </html>
